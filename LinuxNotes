@@ -1,0 +1,8 @@
+Vocab
+boot loader : program that boots the operating system, Examples: Grub, Isolinux
+kernel : glue between hardware and apps
+distribution : collection of programs combined with linux kernal. Examples ubuntu, fedora
+service : program that runs as a background process. Examples: Httpd, ftpd, dhcpd
+file system: method for storing and organizing files. Examples: ext3, fat, ntfs
+x window system
+desktop environment
