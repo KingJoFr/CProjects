@@ -1,0 +1,21 @@
+bookmark: beej c page 46
+          21st century c page 18
+          modern c p 40
+
+Passing a pointer to an array changes the array directly
+passing an array creates a copy of the array
+multi dimensional array needs to know all dimension except first example (int a[][3])
+Strings are not mutable but strings declared as arrays are
+
+print size_t with %zu strlen(string) string length
+
+error checking tools
+lint, debuggers, leak finders, bound checkers.
+
+Steps of running a c program
+Preprocessor, obeys commands that start with # which are called directives, which adds things to the program
+they don't end with a semicolon
+linking: library functions are added to the program
+Whats a makefile?  It's not part of the C programming language but rather part of the operating system or more specifically the shell according to my current understanding. It's a configuration file that specifies how to build an executable program or file.It defines rules and dependencies between files automating the build process
+
+
