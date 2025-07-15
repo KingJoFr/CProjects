@@ -335,3 +335,27 @@ Man pages
 gnu info
 command help: --help
 Other sources: gentoo handbook, ubuntu documentation, fedora documentation
+
+Man pages
+search topic using man followed by topic. can use options -f: list all pages on topic. -k:list all pages that discuss a topic even if not main topic
+examples man -f sysctl or whatis sysctl
+man -k or apropos sysctl
+
+gnu info
+search using info followed by topic. gives more detail than man
+each topic has subsections also called nodes
+* asterisk is a link
+
+gnome-help or yelp: open graphical/desktop help system
+
+ch 9 summary
+Chapter Summary
+You have completed Chapter 9. Let’s summarize the key concepts covered:
+
+The main sources of Linux documentation are the man pages, GNU info, the help options and command, and a rich variety of online documentation sources. 
+The man utility searches, formats, and displays man pages.
+The man pages provide in-depth documentation about programs and other topics about the system, including configuration files, system calls, library routines, and the kernel.
+The GNU Info System was created by the GNU project as its standard documentation. It is robust and is accessible via command line, web, and graphical tools using info.
+Short descriptions for commands are usually displayed with the -h or --help argument.
+You can type help at the command line to display a synopsis of built-in commands.
+There are many other help resources both on your system and on the Internet.

@@ -1,6 +1,6 @@
 bookmark: beej c page 46
           21st century c page 22
-          modern c p 60
+          modern c p 86
 
 process of compiling c file
 all to be written on one line in terminal
@@ -85,5 +85,10 @@ behaviour that depends on the compiler used
 should be documented
 
 Lvalues
-variables are lvalues: objects stored in computer memory not from a computation
+variables are lvalues: objects stored in computer memory not from a computation and go on left of assignment operator
+rvalues go on the right side of assignment operator
 
+relational operators
+<, >, =>, =<, ==, ||, && are left associative and have low precedence
+==, || perform short circuit evaluation
+! is right associative
