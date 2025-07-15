@@ -4,5 +4,334 @@ kernel : glue between hardware and apps
 distribution : collection of programs combined with linux kernal. Examples ubuntu, fedora
 service : program that runs as a background process. Examples: Httpd, ftpd, dhcpd
 file system: method for storing and organizing files. Examples: ext3, fat, ntfs
-x window system
-desktop environment
+x window system: graphical user interface for Linux, provides a way to run graphical applications
+desktop environment: graphical user interface that provides a complete desktop experience. Examples: Gnome, KDE, XFCE
+
+linux support and services
+Linux support and services are essential for maintaining and optimizing Linux systems. They include:
+1. **Technical Support**: Assistance with troubleshooting, configuration, and performance issues.
+Comercial support is available from companies like Red Hat, Canonical, and SUSE, oracle, sles
+community support is available through forums, mailing lists, and online communities, opensuse, centos, ubuntu community support
+
+The boot process
+The boot process is the sequence of events that occurs when a computer is powered on or restarted. It involves several stages:
+1. **BIOS/UEFI Initialization**: The Basic Input/Output System (BIOS) or Unified Extensible Firmware Interface (UEFI) initializes hardware components and performs a Power-On Self Test (POST). The BIOS software is stored on read only memory (ROM) and is executed when the computer is powered on. It checks the hardware components, such as the CPU, RAM, and storage devices, to ensure they are functioning correctly. The rest is controlled by the operating system.
+2. **Boot Loader Execution**: The boot loader, such as GRUB (GRand Unified Bootloader), is loaded into memory. It is responsible for loading the operating system kernel into memory and transferring control to it.  Master boot record (MBR) is a special type of boot sector that contains the boot loader and partition table. It is located at the beginning of a storage device/ boot sector or the efi partition, such as a hard drive or USB drive. The MBR is executed by the BIOS when the computer is powered on, and it loads the boot loader into memory.  Then information on date and time and peripherals is read from cmos memory, which is a small amount of memory that retains its contents even when the computer is powered off.  A number of boot loaders are available, such as GRUB, Isolinux(booting from removable media), Das u-boot(booting on embedded devices), LILO, and SYSLINUX. GRUB is the most commonly used boot loader in Linux systems. Presents a user interface to select the operating system or kernel to boot. It can also load additional modules and configurations.  The size of the mbr is 512 bytes, and it contains the boot loader code, partition table, and a signature. The partition table contains information about the partitions on the storage device, such as their size and location. The signature is used to verify the integrity of the MBR.  The boot loader examines the partition table to determine which partition contains the operating system kernel/ bootable partition, then searches for second stage boot loader such as grub which resides in /boot. It then loads the kernel into memory and transfers control to it.
+For uefi systems, the boot loader is stored in the EFI System Partition (ESP), which is a special partition on the storage device that contains the boot loader and other files needed to boot the operating system. The ESP is formatted with a FAT file system and is typically around 100-200 MB in size. The boot loader is executed by the UEFI firmware when the computer is powered on, and it loads the operating system kernel into memory. Kernels are almost always compressed so first must be uncompressed then analyze the system hardware and load the necessary drivers. The kernel is responsible for managing system resources, such as memory, CPU, and I/O devices.
+3 The Initial Ram Disk the initramfs filesystem image is loaded into memory. It contains essential drivers and modules needed to mount the root filesystem. The initramfs is a temporary filesystem that is loaded into memory during the boot process. It contains the necessary drivers and modules needed to mount the root filesystem. The initramfs is typically compressed and stored in a file called initramfs.img or initrd.img in the /boot directory. The initramfs is loaded into memory by the boot loader and is used to mount the root filesystem. It uses the udev system which figures out which devices are present and loads the necessary drivers for them. The initramfs is also used to load the necessary modules for the kernel, such as network drivers, storage drivers, and other essential components. The mount program instructs the operating system that a filesystem is ready and associates it with a particular point in the overall heirarchy of the file system. If this is successful, the initramfs is cleared from RAM and the init programon the root filesystem (/sbin/init) is executed.
+4 /sbin/init once the kernel sets up hardware and mounts root filesystem is runs /sbin/init. it is also responsible for running the system and shutting down clean up after processes and log in and log out.
+
+Before SysVinit was the default init system, there were several other init systems used in Linux, such as: upstart which was developed by ubuntu and systemd replaced upstart in ubuntu 16.04
+
+with systemd /sbin/init points to /lib/systemd/systemd
+one systemd command is systemctl which is used to manage systemd services and units. It can be used to start, stop, restart, enable, disable, and check the status of services and units. Systemd also provides a number of other commands for managing the system, such as journalctl for viewing logs, timedatectl for managing time and date settings, and hostnamectl for managing the system hostname.
+
+partitions and filesystems
+A partitions is a dedicated subsection of a physical storace media.
+a filesystem is a method for storing and organizing files on a storage device. It defines how files are named, stored, and accessed. Different filesystems have different features and capabilities, such as support for large files, journaling, and permissions. Examples of common filesystems include ext3, ext4, XFS, Btrfs, FAT32, and NTFS.
+Linux uses files system heiarchy standard.
+root directory is /.
+/bin contains essential user binaries
+/boot contains boot loader files and kernel images
+/dev contains device files
+/etc  contains system configuration files
+/home contains user home directories
+/lib  contains essential shared libraries and kernel modules
+/media contains mount points for removable media
+/mnt  contains mount points for temporary filesystems
+/opt  contains optional application software packages
+/sbin contains essential system binaries
+/srv contains data for services provided by the system
+/tmp contains temporary files
+/usr contains user-related programs and data
+/var contains variable data, such as logs and databases
+/root contains the root filesystem
+/proc contains virtual files that provide information about the system and processes
+
+choosing a linux distribution
+server: rhel/centos, ubuntu server, sles/opensuse, debian
+desktop: ubuntu, fedora, opensuse, debian, linux mint, arch linux
+embedded: yocto, buildroot, openwrt, raspbian,android
+
+Partition layout/planning
+best to plan the layout before installing
+typicall layout: linux hardisk(sda), /(sda1), /home(sda2), /var(sda3), swap(sda4)
+swap is desgnated area on hard disk or ssd used as temporary storage when the computers ram is full.
+with some distribution you have to set a superuser then a user. though not with fedora or ubuntu
+
+Display Manager
+There are 2 common systems. X and Wayland
+to check which you have: loginctl show-session $(awk '/tty/ {print $1}' <(loginctl)) -p Type | awk -F= '{print $2}'
+A desktop environment consists of a session manager, which starts and maintains the components of the graphical session and the window manager which controls the placement and movement of windows, window title bars and controls. Although these can be mixed, generally a set of utilites, session manager, and window manager are used together as a unit, and together provide a seamless desktop environment
+if the display manager is not started by default in the default run level , you can start the graphical desktop a different way, after loggin on to a text-mode console, by running startx  from the command line . Or you can start the display manager (gdm, kdm, xdm etc)  manually from mthe command line. This differs from running startx  as the display managers will project a sign in screen.
+The display manager starts at the end of the boot process.  Its responsible for starting the graphics system, loggin in the user, and starting the users desktop environment. You can often select from a choice of desktop environments when loggin in to the system.  The default display manager for Gnome is called GDM, Another is kdm with KDE.
+Gnome is the default desktop environment for most linux distributions: Redhat, fedora, centos, suse entrerprise linux, ubuntu, debian.  Easy transition for windows users
+Anoter common desktop environment is kde. often used in suse and opensuse.  Others include Unity(based on gnome), xfce, lxde.  Most follow similar structure to gnome
+
+gnome-tweaks is an app for customizing
+
+switching users allows your programs to continue running 
+
+nautilus is used for filemanagement in gui
+
+ctrl-h to show hidden files in folder
+ctrl-l to search directories
+when searching for files to add criteria add "+" after initial word to add file type
+
+restoring deleted files
+Task
+The basic operations will be the same here, whether you have a GNOME or KDE desktop, although exact procedures and choices may differ slightly.
+
+Create a new text file on the desktop named lab.txt, using the graphical file manager.
+Delete the file by sending it to Trash.
+Verify the file is now in ~/.local/share/Trash, or a subdirectory thereof.
+NOTE: You will have to get your file browser to show hidden files and directories, those that start with a .).
+Recover the file and make sure it is in its original location.
+Close Solution
+Open the file manager and navigate to your home directory. Once your user configuration is set up for it, this is as simple as right-clicking in the directory, and selecting Create New > Text File and giving it a name (you may see something other than Text File).
+
+With the GNOME file manager, there is no such option in the default setup. You must create a file called new in your Templates directory first. The easiest way to do this is to type Alt-F2 and then in the little window that opens up:
+
+student:/tmp> touch ~/Templates/new
+
+Once you have done that, you can either right-click in the directory, or somewhere on the right side of the title bar to open up a dialog where there will be an option to create a new file of some type.
+
+Why this feature is not on by default might be considered a mystery not understood by modern science. However, the logic is that new files are generally not created in a vacuum (at least in GUIs); one expects to make them in an application. Some distributions or versions of GNOME may not need this step.
+This should be pretty obvious, either by dragging and dropping in the Trash folder on the left, or through a right-click on the file.
+To navigate down through your .local directory, you have to make hidden files visible. On GNOME systems, you can either just hit CTRL-H, or you can click on the little down arrow next to the gear icon and toggle showing hidden files on and off.
+The easiest way is to click on the Trash icon and then pick Restore, which will bring it back to its original location which you can easily verify.
+Note that the GNOME File Manager does not include a Delete or Permanently Delete option by default. To enable this you have to go into preferences and turn it on. You can enter the preferences menu by starting the File Manager and on the top task bar on the desktop, click on its icon and get into the preference menus.x
+
+chapter 5 summaryk
+ou have completed Chapter 5. Let's summarize the key concepts covered:
+
+GNOME is a popular desktop environment and graphical user interface that runs on top of the Linux operating system.
+The default display manager for GNOME is called gdm.
+The gdm display manager presents the user with the login screen, which prompts for the login username and password.
+Logging out through the desktop environment kills all processes in your current X session and returns to the display manager login screen.
+Linux enables users to switch between logged-in sessions.
+Suspending puts the computer into sleep mode.
+For each key task, there is generally a default application installed.
+Every user created in the system will have a home directory.
+The Places menu contains entries that allow you to access different parts of the computer and the network.
+Nautilus gives three formats to view files.
+Most text editors are located in the Accessories submenu.
+Each Linux distribution comes with its own set of desktop backgrounds.
+GNOME comes with a set of different themes which can change the way your applications look.
+
+Debian Packaging
+dpkg is the package manager for debian systems
+It does not automatically download and install packages
+The higher level package management system is called advanced package tool(apt)
+
+web browsers that linux offers
+Firefox
+Google Chrome
+Chromium
+Epiphany (renamed web)
+Konqueror
+linx, lynx, w3m
+Opera
+
+email that linux supports
+Graphical email clients, such as Thunderbird, Evolution, and Claws Mail.
+Text mode email clients, such as Mutt and mail.
+All web browser-based clients, such as Gmail, Yahoo Mail, and Office 365.
+
+other apps
+file transfer ftp: filezilla
+messaging networks: gtalk, aim, icq, msn, irc
+hexchat: irc
+
+development apps
+vi, emacs, gcc, clang, gdb, valgrind, git, apache subversion,  eclipse, vs studio, 
+
+audio players
+amarok, audacity, audacious, rythmbox
+
+movie players
+vlc, mplayer, xine, totem
+
+movie editors
+blender, cinelerra, ffmpeg,
+
+graphics editor
+gimp
+
+graphics utilities
+eye of gnome, inkscape, convert, scribus.
+
+ssh is for logging in remotely to a server
+common commands
+shutdown
+halt
+poweroff
+init
+reboot
+-r
+-h
+which: for searching programs
+whereis: for searching programs
+cd ~: change to home directory
+cd -: go to previous working directory
+tree -d: to view directories
+ls: list all files
+ls -a: list all files even hidden ones
+ln: to create hard links
+ln -s: to create soft links
+
+Hard links
+when a file is hard linked that mean it can have more than one name in more than one location.  This helps to save space.
+
+Symbolic links 
+also save space. Can also point to things on different filesystems or drives.  If media is not connected this creates a "dangling link"
+
+Pushd, popd for navigating directory history. dirs display list of directories
+
+viewing files
+cat: view files that are not very long
+tac: used to look at file backwords starting from last line
+less: used to view larger files
+tail: used to print the last 10 lines of a file 
+head: prints the first 10 lines of a file
+touch: often used to set, update the access, change, modify times of files. can also be used to create empty files
+touch <filename>
+touch: -2 120916000 myile: sets timestamp to 12-9-1600
+mkdir: to create directory
+rmdir: to remove directory. the directory must be empty.
+rm -rf: remove directory and all it's contents
+mv: rename a file
+rm: remove a file
+rm -f: forcefully remove a file
+rm -i: interactively remove a frill
+
+
+ps1 is a variable character string set as the prompt on the command line
+
+I/O redirection
+through the command shell we can redirect standard input/output/ filestreams 
+examples
+$ do_something < input-file
+
+If you want to send the output to a file, use the greater-than sign (>) as in:
+
+$ do_something > output-file
+
+In fact, you can do both at the same time as in:
+
+$ do_something < input-file > output-file
+Because stderr is not the same as stdout, error messages will still be seen on the terminal windows in the above example.
+
+If you want to redirect stderr to a separate file, you use stderr’s file descriptor number (2), the greater-than sign (>), followed by the name of the file you want to receive everything the running command writes to stderr:
+
+$ do_something 2> error-file
+NOTE: By the same logic, do_something 1> output-file is the same as do_something > output-file.
+
+A special shorthand notation can send anything written to file descriptor 2 (stderr) to the same place as file descriptor 1 (stdout): 2>&1.
+
+$ do_something > all-output-file 2>&1
+
+bash permits an easier syntax for the above:
+
+$ do_something >& all-output-file
+
+Pipes
+$ command1 | command2 | command3
+pipeline of commands that can run in parallel
+
+Searching for files
+locate, find, grep
+locate: searches a preconstructed database of files.  Results can be many and some not relevant
+grep: this will shorten the list and give you more relevant results
+find: searches the file system in real time. slower than locate. Options: -name( only list files with a certain pattern in name), -iname(ignore case),-type(look for specified type, d=directory l=symbolic link, f=regular file)
+
+examples: Searching for files and directories named gcc:
+
+$ find /usr -name gcc
+
+Searching only for directories named gcc:
+
+$ find /usr -type d -name gcc
+
+Searching only for regular files named gcc:
+
+$ find /usr -type f -name gcc
+
+example: $ locate zip | grep bin
+locate uses a database created automatically once a day by the system called updatedb, which can be manually run using the same updatedb
+
+Wildcard matching
+?	Matches any single character
+*	Matches any string of characters
+[set]	Matches any character in the set of characters, for example [adf] will match any occurrence of a, d, or f
+[!set]	Matches any character not in the set of characters
+
+advanced find
+$ find -name "*.swp" -exec rm {} ';'
+find and remove all files that end with swp
+{} squigly brackets will be filled with the list of files
+';' or \; can be used to end the statement
+using -ok instead of -exec will ask for permission before executing
+
+find based on time
+example $find / ctime 3
+-ctime: time inode data changed
+-atime: time accessed
+-mtime: time modified/written
+for minutes -cmin, -amin, -mmin
+the number is number of days can be -n or +n
+
+find based on size
+example $ find / -size +10M -exec command {} ’;’
+/ means to find starting from root
+finds files greater than 10mb in size
+specify bytes c=bytes, k=kilobytes, M=megabytes, G=gigabytes
+
+
+Package managers
+2 levels of package managers
+low level (dpkg rpm): unpacking, running scripts, installing
+high level (apt, dnf, zypper): works with groups of packages, downloads and figures out dependencies
+
+Operation	rpm	deb
+Install package	rpm -i foo.rpm	dpkg --install foo.deb
+Install package, dependencies	dnf install foo	apt install foo
+Remove package	rpm -e foo.rpm	dpkg --remove foo.deb
+Remove package, dependencies	dnf remove foo	apt autoremove foo
+Update package	rpm -U foo.rpm	dpkg --install foo.deb
+Update package, dependencies	dnf update foo	apt install foo
+Update entire system	dnf update	apt dist-upgrade
+Show all installed packages	rpm -qa or dnf list installed	dpkg --list
+Get information on package	rpm -qil foo	dpkg --listfiles foo
+Show packages named foo	dnf list "foo"	apt-cache search foo
+Show all available packages	dnf list	apt-cache dumpavail foo
+What package is file part of?	rpm -qf file	dpkg --search file
+
+Chapter 8 summary
+Chapter Summary
+You have completed Chapter 8. Let’s summarize the key concepts we covered:
+
+Virtual terminals (VT) in Linux are consoles, or command line terminals that use the connected monitor and keyboard.
+Different Linux distributions start and stop the graphical desktop in different ways.
+A terminal emulator program on the graphical desktop works by emulating a terminal within a window on the desktop.
+The Linux system allows you to either log in via text terminal or remotely via the console.
+When typing your password, nothing is printed to the terminal, not even a generic symbol to indicate that you typed.
+The preferred method to shut down or reboot the system is to use the shutdown command.
+There are two types of pathnames: absolute and relative.
+An absolute pathname begins with the root directory and follows the tree, branch by branch, until it reaches the desired directory or file.
+A relative pathname starts from the present working directory.
+Using hard and soft (symbolic) links is extremely useful in Linux.
+cd remembers where you were last, and lets you get back there with cd -.
+locate performs a database search to find all file names that match a given pattern.
+find locates files recursively from a given directory or set of directories.
+find is able to run commands on the files that it lists, when used with the -exec option.
+touch is used to set the access, change, and edit times of files, as well as to create empty files.
+The Advanced Packaging Tool (apt) package management system is used to manage installed software on Debian-based systems.
+You can use the dnf command-line package management utility for the RPM-based Red Hat Family Linux distributions.
+The zypper package management system is based on RPM and used for openSUSE.
+
+Documentation sources
+Man pages
+gnu info
+command help: --help
+Other sources: gentoo handbook, ubuntu documentation, fedora documentation

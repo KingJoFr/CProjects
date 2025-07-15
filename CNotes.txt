@@ -1,6 +1,19 @@
 bookmark: beej c page 46
-          21st century c page 18
-          modern c p 40
+          21st century c page 22
+          modern c p 60
+
+process of compiling c file
+all to be written on one line in terminal
+1 gcc call gcc compiler
+2 name.c name of the file to compile
+3 -o flag to put before the output name
+4 name output name
+5 -lm link math library?
+6 -g adds symbols for debuggin
+7 -Wall enables a set of warning messages that can help you identify potential issues in your code
+8 -03 indicates optimization level 3 which tries every trick for building faster code
+9 -std=gnu11 the standard to use? 
+
 
 Passing a pointer to an array changes the array directly
 passing an array creates a copy of the array
@@ -18,4 +31,59 @@ they don't end with a semicolon
 linking: library functions are added to the program
 Whats a makefile?  It's not part of the C programming language but rather part of the operating system or more specifically the shell according to my current understanding. It's a configuration file that specifies how to build an executable program or file.It defines rules and dependencies between files automating the build process
 
+
+make file built in variables
+$@ the full file target name.
+$* the target file with the suffice cut off
+$< the name of the file that caused this target to get triggered and made.
+
+show default rules
+make -p -f /dev/null
+
+ldflags vs ldlibs
+
+Printing to screen and conversion specification
+printf: function for displaying a string also called format string. a format string can contain characters as well as "conversion specifications" these are characters that begin with %. it represents a value to be filled in during printing
+
+%c character
+%d for signed integer
+%f for float
+%i signed integer
+%e exponential format
+%g exponential or fixed decimal format
+
+examples
+%5d number will be printed with 5 characters min
+%.2f number will be printed with 2 numbers after decimal
+%10.3f number will be printed with 10 characters overall and min of 3 right justified
+%-5d left justified
+
+escape sequences \
+\a alert
+\b backspace
+\n newline
+\horizontal tab
+
+to print % use double %%
+scanf is for getting input from the user
+& precedes each variable in a scanf call
+example: scanf("%d%f", &i,&j) %d gets stored into i and %f gets stored into j
+you can include characters to be expected in the input such as "/"
+example: scanf("%d/%d", &i,&j)
+
+operators
+/ with integers will cut off fractional part
+% gives remainder. Requires integers. With anything else will not compile
+good to use parenthesis but c does follow operator rules
+left associative (*, /,%, +,-)
+right associative( unary operator +,-, =)
+that is  i=j=k=0 means i=(j=(k=0))
+
+
+Implementation defined behaviour
+behaviour that depends on the compiler used
+should be documented
+
+Lvalues
+variables are lvalues: objects stored in computer memory not from a computation
 
