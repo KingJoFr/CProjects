@@ -359,3 +359,26 @@ The GNU Info System was created by the GNU project as its standard documentation
 Short descriptions for commands are usually displayed with the -h or --help argument.
 You can type help at the command line to display a synopsis of built-in commands.
 There are many other help resources both on your system and on the Internet.
+
+Processes
+    types
+        interactivce processes: started by a user
+        batch processes: automatic processes scheduled from terminal
+        daemons: server processes that run continually. Many launched from startup
+        threads: tasks that run under a main process
+        kernel threads: tasks performed by kernel
+    scheduler: shifts processes
+    Processes shift between executing and waiting.  sometimes end up in zombie state
+    each process is given an ID--PID, parent process id--PPID, thread id--TID.
+    Eliminate process with kill command
+    example: kill -SIGKILL <pid> or kill -9 <pid>
+    users are assigned real user i--RUID, identifies who started a process
+    groups get RGID
+    EUID: determines the access rights of user  
+    EGID: determines the access rights of a group
+    How much cpu time a process is given depends on the priority. this is determined by "nice" value. the lower the value the higher the priority. -20 highest priority +19 lowest priority
+    load average: average system load over a given period of time, commands w, top, uptime
+    times are 1 minute, 5 minutes, and 15 minutes
+    You can run a process in the background by adding "&" to the command
+    ctrl-z to suspend a process in the foreground
+    view jobs running in the background with pid with "jobs -l" 
