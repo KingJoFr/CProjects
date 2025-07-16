@@ -1,6 +1,6 @@
 bookmark: beej c page 46
           21st century c page 22
-          modern c p 86
+          modern c p 140
 
 process of compiling c file
 all to be written on one line in terminal
@@ -65,11 +65,15 @@ escape sequences \
 \horizontal tab
 
 to print % use double %%
+
+scanf
 scanf is for getting input from the user
 & precedes each variable in a scanf call
 example: scanf("%d%f", &i,&j) %d gets stored into i and %f gets stored into j
 you can include characters to be expected in the input such as "/"
 example: scanf("%d/%d", &i,&j)
+to skip space in scanf : scanf(" %c", &ch) the space before %c tells it to skip zero or more spaces before accepting input
+
 
 operators
 / with integers will cut off fractional part
@@ -92,3 +96,24 @@ relational operators
 <, >, =>, =<, ==, ||, && are left associative and have low precedence
 ==, || perform short circuit evaluation
 ! is right associative
+
+
+Brace placements styles
+if (condition){
+    K & R style
+}
+
+if (condition)
+{
+    Allman style
+}
+
+if(condition)
+    {
+    Whitesmith style
+    }
+
+if(condition)
+    {
+        GNU style
+    }
